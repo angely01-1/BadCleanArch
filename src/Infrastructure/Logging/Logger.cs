@@ -4,8 +4,8 @@ namespace Infrastructure.Logging;
 
 public static class Logger
 {
-	// Convertido a propiedad pública en lugar de campo público.
-	public static bool Enabled { get; set; } = true;
+    // Se maneja como propiedad para permitir habilitar o deshabilitar el registro dinámicamente
+    public static bool Enabled { get; set; } = true;
 
 	public static void Log(string message)
 	{
@@ -21,9 +21,8 @@ public static class Logger
 		}
 		catch (Exception)
 		{
-			// Intencionalmente ignorado: operación "best-effort".
-			// Se documenta el motivo para que Sonar deje de sugerir manejo.
-			// (Evitar que fallos en logging/DB rompan la aplicación principal)
-		}
-	}
+            // La excepción se omite de forma deliberada
+            // Este enfoque evita que errores secundarios impacten la lógica principal
+        }
+    }
 }

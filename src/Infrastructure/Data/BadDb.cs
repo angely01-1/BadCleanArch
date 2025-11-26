@@ -9,9 +9,9 @@ using Microsoft.Data.SqlClient;
 
 public static class BadDb
 {
-	// Ahora es propiedad. NO incluye contraseña por defecto.
-	// La contraseña/connstring real debe venir desde configuration/secrets (appsettings/Secret).
-	public static string ConnectionString { get; set; } = "Server=localhost;Database=master;TrustServerCertificate=True";
+    // Se expone como propiedad para permitir configurarla externamente
+    // La cadena real (con credenciales) debe cargarse desde configuración segura como appsettings o secrets
+    public static string ConnectionString { get; set; } = "Server=localhost;Database=master;TrustServerCertificate=True";
 
 	public static int ExecuteNonQueryUnsafe(string sql)
 	{
@@ -23,7 +23,8 @@ public static class BadDb
 
 	public static IDataReader ExecuteReaderUnsafe(string sql)
 	{
-		var conn = new SqlConnection(ConnectionString);
+        // Se ejecuta un reader utilizando la conexión actual sin validación adicional.
+        var conn = new SqlConnection(ConnectionString);
 		var cmd = new SqlCommand(sql, conn);
 		conn.Open();
 		return cmd.ExecuteReader();
